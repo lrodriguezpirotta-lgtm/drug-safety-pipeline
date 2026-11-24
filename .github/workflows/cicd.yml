@@ -1,0 +1,18 @@
+name: CI/CD
+
+on: #cuándo corre, en cada push y pull request a main
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs: #que trabajos hay, cada uno en una máquina nueva
+  #CI
+  ci:
+    runs-on: ubuntu-latest #qué sist op tiene esa máquina
+    steps:
+      - uses: actions/checkout@v4 #uses: una acción ya hecha. #run:un comando de terminal
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked #instala las dependencias usando las versiones del uv.lock
+      - run: uv run pytest
