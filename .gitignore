@@ -10,3 +10,5 @@ wheels/
 .venv
 
 explorardataframe.py
+
+data/
