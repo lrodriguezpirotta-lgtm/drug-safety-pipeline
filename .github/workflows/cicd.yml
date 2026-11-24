@@ -16,3 +16,15 @@ jobs: #que trabajos hay, cada uno en una máquina nueva
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --locked #instala las dependencias usando las versiones del uv.lock
       - run: uv run pytest
+  build:
+    needs: ci #depende del ci
+    if: github.ref == 'refs/heads/main' #estamos en la rama main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv build #genera un paquete
+      - uses: actions/upload-artifact@v4 #guarda el paquete
+        with:
+          name: drug-safety-pipeline-dist
+          path: dist/ #es la carpeta donde queda tu proyecto empaquetado.

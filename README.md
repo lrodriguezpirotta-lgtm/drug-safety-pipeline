@@ -15,3 +15,8 @@ QUÉ PASA SI HAY CAMBIOS ENTRE VERSIONES???
 
 - Por qué las columnas anidadas están declaradas explicitamente?Si se detectaran en cada corrida, el esquema de los Parquet podría cambiar según el día: una columna que viene vacía en todas las filas de una fecha no se detectaría como anidada, y al día siguiente sí.
 Con la lista fija, si openFDA cambia su estructura el pipeline corta y queda visible en los logs de Airflow, en vez de seguir corriendo y guardar datos incompletos sin que nadie se entere. Preferimos una corrida fallada que se arregla, a datos mal cargados que se descubren meses después.
+
+-CI con GitHub Actions. El archivo .github/workflows/ci.yml configura la integración continua. En cada push y en cada pull request a main, GitHub levanta una máquina virtual limpia con Ubuntu, baja el repositorio, instala uv, instala las dependencias con uv sync --locked usando las versiones exactas del uv.lock, y corre los tests con pytest.
+Sirve para verificar que el proyecto funcione desde cero en una máquina que no es la mía: si dependiera de algo instalado localmente y no declarado en el pyproject.toml, la CI fallaría. También impide mergear un PR que rompa los tests.
+
+- uv build produce 2 archivos. .whl y .tar.gz. Wheel es el paquete ya listo para instalar. Viene preparado: pip lo descomprime y lo pone en su lugar. tar.gz es el código fuente comprimido. Para instalarlo hay que construirlo primero. Por qué se generan los dos: el wheel sirve para la mayoría de los casos y es el que se instala normalmente. El tar.gz es el respaldo, para plataformas donde el wheel no sirva o para que alguien pueda inspeccionar y modificar el código.
