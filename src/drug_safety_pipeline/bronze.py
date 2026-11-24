@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import UTC, datetime
 from drug_safety_pipeline.extract import extraer_eventos
 
-DIRECTORIO = "data/bronze"
+DIRECTORIO = "data/bronze" #acá pongo el archivo Parquet
 COLUMNAS = ["reportduplicate", "primarysource", "sender", "receiver", "patient"] #son las columnas de la API que están anidadas.
 
 def build_bronze(datos, ingestion_ts):
